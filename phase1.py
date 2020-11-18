@@ -1,0 +1,41 @@
+# phase 1, building a document store
+"""
+Phase 1: Building a document store
+Write a program that reads the three json files (as named above) in the current directory and constructs a collection for each.
+Your program will take as input a port number under which the MongoDB server is running, 
+will connect to the server and will create a database named 291db (if it does not exist). 
+Your program then will create three collections named Posts, Tags and Votes respectively for Posts.json, Tags.json and Votes.json. 
+If those collections exist, your program should drop them and create new collections.
+Your program for this phase ends after building these collections. 
+As you may notice in the sample data, the fields of a record are not fixed and some records have more or less fields than others.
+
+Groups of size 3 will need, as part of their program for Phase 1, 
+to extract all terms of length 3 characters or more in title and body fields of Posts, 
+add those terms as an array named terms to Posts collection, and build an index on those terms.
+Assume a term is an alphanumeric character string, and that terms are separated by white spaces and/or punctuations. 
+Also as part of their program for Part 2, they will need to use this index when searching the title and body fields in the next phase.
+"""
+
+import json
+from pymongo import MongoClient
+
+# file names
+files_str_list = ["Posts","Tags","Votes"]
+
+# make connection
+client = MongoClient("mongodb://localhost:27017/")
+
+# database
+db = client["PROJECT2"]
+
+for fileName in files_str_list:
+    #create collection
+    Collection = db[fileName]
+
+    #open file
+    with open(fileName + ".json") as file:
+        file_data = json.load(file)
+
+    #insert data to collection
+    Collection.insert_many(file_data)
+    
