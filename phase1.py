@@ -17,25 +17,45 @@ Also as part of their program for Part 2, they will need to use this index when 
 """
 
 import json
+import ijson
 from pymongo import MongoClient
+import os.path
+
 
 # file names
 files_str_list = ["Posts","Tags","Votes"]
 
 # make connection
 client = MongoClient("mongodb://localhost:27017/")
-
 # database
 db = client["PROJECT2"]
 
-for fileName in files_str_list:
-    #create collection
-    Collection = db[fileName]
+#add posts
+postCollection = db['Posts']
+postCollection.drop()
+with open('Posts.json', 'r') as f:
+    objs = ijson.items(f, 'posts.row.item')
+    cols = list(objs)
+postCollection.insert_many(cols)
 
-    #open file
-    with open(fileName + ".json") as file:
-        file_data = json.load(file)
+#add votes
+voteCollection = db['Votes']
+voteCollection.drop()
+with open('Votes.json', 'r') as f:
+    objs = ijson.items(f, 'votes.row.item')
+    cols = list(objs)
+voteCollection.insert_many(cols)
 
-    #insert data to collection
-    Collection.insert_many(file_data)
+#add tags
+tagCollection = db['Tags']
+tagCollection.drop()
+with open('Tags.json', 'r') as f:
+    objs = ijson.items(f, 'tags.row.item')
+    cols = list(objs)
+tagCollection.insert_many(cols)
+
+
+
+
+
     
