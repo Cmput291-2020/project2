@@ -27,24 +27,32 @@ files_str_list = ["Posts","Tags","Votes"]
 
 # make connection
 client = MongoClient("mongodb://localhost:27017/")
-
 # database
 db = client["PROJECT2"]
+
+#add posts
 postCollection = db['Posts']
 postCollection.drop()
-
-with open('Posts.JSON', 'r') as f:
+with open('Posts.json', 'r') as f:
     objs = ijson.items(f, 'posts.row.item')
     cols = list(objs)
-
 postCollection.insert_many(cols)
-# for entry in cols:
-#     postCollection.insert_one(entry)
 
+#add votes
+voteCollection = db['Votes']
+voteCollection.drop()
+with open('Votes.json', 'r') as f:
+    objs = ijson.items(f, 'votes.row.item')
+    cols = list(objs)
+voteCollection.insert_many(cols)
 
-
-
-# test = ret.inserted_ids
+#add tags
+tagCollection = db['Tags']
+tagCollection.drop()
+with open('Tags.json', 'r') as f:
+    objs = ijson.items(f, 'tags.row.item')
+    cols = list(objs)
+tagCollection.insert_many(cols)
 
 
 
