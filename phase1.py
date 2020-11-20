@@ -31,6 +31,7 @@ client = MongoClient("mongodb://localhost:27017/")
 # database
 db = client["PROJECT2"]
 postCollection = db['Posts']
+postCollection.drop()
 
 with open('Posts.JSON', 'r') as f:
     objs = ijson.items(f, 'posts.row.item')
