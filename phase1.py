@@ -20,32 +20,34 @@ import ijson
 from pymongo import MongoClient
 import os.path
 
-def phase_one(userinput:str, db):
-    # file names
-    files_str_list = ["Posts","Tags","Votes"]
+client = MongoClient("mongodb://localhost:27017/")
+# database
+db = client["PROJECT2"]
 
-    #add posts
-    postCollection = db['Posts']
-    postCollection.drop()
-    with open('Posts.json', 'r') as f:
-        objs = ijson.items(f, 'posts.row.item')
-        cols = list(objs)
-    postCollection.insert_many(cols)
 
-    #add votes
-    voteCollection = db['Votes']
-    voteCollection.drop()
-    with open('Votes.json', 'r') as f:
-        objs = ijson.items(f, 'votes.row.item')
-        cols = list(objs)
-    voteCollection.insert_many(cols)
+# file names
+files_str_list = ["Posts", "Tags", "Votes"]
 
-    #add tags
-    tagCollection = db['Tags']
-    tagCollection.drop()
-    with open('Tags.json', 'r') as f:
-        objs = ijson.items(f, 'tags.row.item')
-        cols = list(objs)
-    tagCollection.insert_many(cols)
+# add posts
+postCollection = db['Posts']
+postCollection.drop()
+with open('Posts.json', 'r') as f:
+    objs = ijson.items(f, 'posts.row.item')
+    cols = list(objs)
+postCollection.insert_many(cols)
 
-    
+# add votes
+voteCollection = db['Votes']
+voteCollection.drop()
+with open('Votes.json', 'r') as f:
+    objs = ijson.items(f, 'votes.row.item')
+    cols = list(objs)
+voteCollection.insert_many(cols)
+
+# add tags
+tagCollection = db['Tags']
+tagCollection.drop()
+with open('Tags.json', 'r') as f:
+    objs = ijson.items(f, 'tags.row.item')
+    cols = list(objs)
+tagCollection.insert_many(cols)
