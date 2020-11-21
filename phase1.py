@@ -20,14 +20,9 @@ import ijson
 from pymongo import MongoClient
 import os.path
 
-def phase_one(userinput:str):
+def phase_one(userinput:str, db):
     # file names
     files_str_list = ["Posts","Tags","Votes"]
-
-    # make connection
-    client = MongoClient("mongodb://localhost:"+ userinput +"/")
-    # database
-    db = client["291db"]
 
     #add posts
     postCollection = db['Posts']
