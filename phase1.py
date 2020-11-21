@@ -15,47 +15,37 @@ add those terms as an array named terms to Posts collection, and build an index 
 Assume a term is an alphanumeric character string, and that terms are separated by white spaces and/or punctuations. 
 Also as part of their program for Part 2, they will need to use this index when searching the title and body fields in the next phase.
 """
-
 import json
 import ijson
 from pymongo import MongoClient
 import os.path
 
+def phase_one(userinput:str, db):
+    # file names
+    files_str_list = ["Posts","Tags","Votes"]
 
-# file names
-files_str_list = ["Posts","Tags","Votes"]
+    #add posts
+    postCollection = db['Posts']
+    postCollection.drop()
+    with open('Posts.json', 'r') as f:
+        objs = ijson.items(f, 'posts.row.item')
+        cols = list(objs)
+    postCollection.insert_many(cols)
 
-# make connection
-client = MongoClient("mongodb://localhost:27017/")
-# database
-db = client["PROJECT2"]
+    #add votes
+    voteCollection = db['Votes']
+    voteCollection.drop()
+    with open('Votes.json', 'r') as f:
+        objs = ijson.items(f, 'votes.row.item')
+        cols = list(objs)
+    voteCollection.insert_many(cols)
 
-#add posts
-postCollection = db['Posts']
-postCollection.drop()
-with open('Posts.json', 'r') as f:
-    objs = ijson.items(f, 'posts.row.item')
-    cols = list(objs)
-postCollection.insert_many(cols)
-
-#add votes
-voteCollection = db['Votes']
-voteCollection.drop()
-with open('Votes.json', 'r') as f:
-    objs = ijson.items(f, 'votes.row.item')
-    cols = list(objs)
-voteCollection.insert_many(cols)
-
-#add tags
-tagCollection = db['Tags']
-tagCollection.drop()
-with open('Tags.json', 'r') as f:
-    objs = ijson.items(f, 'tags.row.item')
-    cols = list(objs)
-tagCollection.insert_many(cols)
-
-
-
-
+    #add tags
+    tagCollection = db['Tags']
+    tagCollection.drop()
+    with open('Tags.json', 'r') as f:
+        objs = ijson.items(f, 'tags.row.item')
+        cols = list(objs)
+    tagCollection.insert_many(cols)
 
     
