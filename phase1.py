@@ -20,7 +20,11 @@ import ijson
 from pymongo import MongoClient
 import os.path
 
-def phase_one(userinput:str, db):
+def phase_one(userinput:str):
+
+    client = MongoClient("mongodb://localhost:"+ userinput +"/")
+    # database
+    db = client["291db"]
     # file names
     files_str_list = ["Posts","Tags","Votes"]
 
@@ -49,3 +53,7 @@ def phase_one(userinput:str, db):
     tagCollection.insert_many(cols)
 
     
+
+if __name__ == 'main':
+    userinput = input("please enter port number: ")
+    phase_one(userinput)

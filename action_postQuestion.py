@@ -32,5 +32,6 @@ def post_question(db,current_user):
     ]
     
     user_collection.insert_one(question)
-        
+
+
 
