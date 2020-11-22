@@ -54,6 +54,6 @@ def phase_one(userinput:str):
 
     
 
-if __name__ == 'main':
+if __name__ == '__main__':
     userinput = input("please enter port number: ")
     phase_one(userinput)
