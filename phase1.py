@@ -18,42 +18,75 @@ Also as part of their program for Part 2, they will need to use this index when 
 import json
 import ijson
 from pymongo import MongoClient
+import pymongo
 import os.path
 
-def phase_one(userinput:str):
 
-    client = MongoClient("mongodb://localhost:"+ userinput +"/")
-    # database
-    db = client["291db"]
-    # file names
-    files_str_list = ["Posts","Tags","Votes"]
+def strListMaker(str, currList):
 
-    #add posts
-    postCollection = db['Posts']
-    postCollection.drop()
-    with open('Posts.json', 'r') as f:
-        objs = ijson.items(f, 'posts.row.item')
-        cols = list(objs)
-    postCollection.insert_many(cols)
+    newStr = str.split(" ")
 
-    #add votes
-    voteCollection = db['Votes']
-    voteCollection.drop()
-    with open('Votes.json', 'r') as f:
-        objs = ijson.items(f, 'votes.row.item')
-        cols = list(objs)
-    voteCollection.insert_many(cols)
+    for word in newStr:
+        if(len(word) >= 3) and word not in currList:
+            currList.append(word)
+    return currList
 
-    #add tags
-    tagCollection = db['Tags']
-    tagCollection.drop()
-    with open('Tags.json', 'r') as f:
-        objs = ijson.items(f, 'tags.row.item')
-        cols = list(objs)
-    tagCollection.insert_many(cols)
 
-    
+#creating client connection
+client = MongoClient("mongodb://localhost:27017/")
+# database
+db = client["PROJECT2"]
 
-if __name__ == '__main__':
-    userinput = input("please enter port number: ")
-    phase_one(userinput)
+
+# file names
+files_str_list = ["Posts", "Tags", "Votes"]
+
+
+print("Inputting post data...")
+# add posts
+postCollection = db['Posts']
+postCollection.drop()
+with open('Posts.json', 'r') as f:
+    objs = ijson.items(f, 'posts.row.item')
+    cols = list(objs)
+postCollection.insert_many(cols)
+
+
+print("updating array")
+# fields = postCollection.find({},{'_id':1, 'Title':1, 'Body': 1})
+
+
+# theList = []
+#
+# for doc in postCollection.find({"Title": {'$exists': True}}):
+#     theList = strListMaker(doc['Title'], theList)
+#     postCollection.update_one({'_id':doc['_id']}, {"$set": {"terms": theList}})
+#
+# for doc in postCollection.find({"Body": {'$exists': True}}):
+#     theList = strListMaker(doc['Body'], theList)
+#     postCollection.update_one({'_id':doc['_id']}, {"$set": {"terms": theList}})
+
+
+
+
+
+print("Inputting votes data...")
+# add votes
+voteCollection = db['Votes']
+voteCollection.drop()
+with open('Votes.json', 'r') as f:
+    objs = ijson.items(f, 'votes.row.item')
+    cols = list(objs)
+voteCollection.insert_many(cols)
+
+
+print("Inputting tags data...")
+# add tags
+tagCollection = db['Tags']
+tagCollection.drop()
+with open('Tags.json', 'r') as f:
+    objs = ijson.items(f, 'tags.row.item')
+    cols = list(objs)
+tagCollection.insert_many(cols)
+
+

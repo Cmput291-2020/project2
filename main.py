@@ -11,7 +11,7 @@ def main():
     client = MongoClient("mongodb://localhost:"+ userinput +"/")
 
     # database
-    db = client["291db"]
+    db = client["PROJECT2"]
 
     #p1.phase_one(userinput) #phase 1 reads the json files
 
