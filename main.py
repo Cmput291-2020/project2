@@ -3,6 +3,7 @@ import sys
 import phase1 as p1
 import enterProgram
 import action_postQuestion
+import searchPosts
 from pymongo import MongoClient
 
 def main():
@@ -27,6 +28,9 @@ def main():
         if user_choice == '1':
             #user can post question
             action_postQuestion.post_question(db,current_user)
+
+        elif user_choice == '2':
+            searchPosts.searchPosts(db, current_user)
 
         elif user_choice =="0":
             print('Goodbye')
