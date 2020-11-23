@@ -15,9 +15,9 @@ def post_question(db,current_user):
     body = input('Please enter your question: \n')
 
 
-    post_id = random.randint(400728,999999)
+    post_id = str(random.randint(400728,999999))
     while postCollection.find({"Id":post_id}) == True:
-        post_id = random.randint(400728,999999)
+        post_id = str(random.randint(400728,999999))
     
     for tag in tags_list:
         if len(list(tagCollection.find({"TagName":tag}))) != 0:
