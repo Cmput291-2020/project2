@@ -1,6 +1,6 @@
 # main file that runs both phase1 and phase2
 import sys
-import phase1 as p1
+#import phase1 as p1
 import enterProgram
 import action_postQuestion
 import searchPosts
@@ -22,6 +22,7 @@ def main():
         display_page = '''
         ---------Exit-------------------Press 0---------
         ---------Post Question----------Press 1---------
+        ---------Search Question--------Press 2---------
         '''
 
         user_choice = input(display_page)
