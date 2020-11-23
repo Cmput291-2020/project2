@@ -1,4 +1,4 @@
-
+from pprint import pprint
 
 
 def id_match(id, listofIDs):
@@ -47,9 +47,13 @@ def searchPosts(db, user):
     viewCount = str(viewCount)
     postCollection.update({'Id':id_choice}, {'$set': {'ViewCount':viewCount}})
 
-    #action options
-    print("----------------")
+    #printing all fields
+    print("-------------------------------------------------")
     print("You selected ID: ", id_choice)
+    pprint(temp)
+    print("-------------------------------------------------")
+
+    # action options
     print("(1) Answer Question")
     print("(2) List Answers")
     print("(3) Vote")
