@@ -1,6 +1,6 @@
 # main file that runs both phase1 and phase2
 import sys
-#import phase1 as p1
+import phase1 as p1
 import enterProgram
 import action_postQuestion
 import searchPosts
@@ -14,7 +14,7 @@ def main():
     # database
     db = client["291db"]
 
-    #p1.phase_one(userinput) #phase 1 reads the json files
+    p1.phase_one(db,userinput) #phase 1 reads the json files
 
     current_user = enterProgram.init_function(db) #init_fun create and return user
     while current_user == False:

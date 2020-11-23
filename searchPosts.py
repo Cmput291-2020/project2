@@ -1,11 +1,21 @@
 from pprint import pprint
-
+import action_vote
+import action_listAnswers
+import action_answerQuestion
 
 def id_match(id, listofIDs):
     for i in listofIDs:
-        if id == i:
+        if id == str(i):
             return True
     return False
+
+def display_post(post):
+    print("ID: ", post['Id'])
+    print("Title: ", post['Title'])
+    print("Creation Date: ", post['CreationDate'])
+    print("Score: ", post['Score'])
+    print("Answer Count: ", post['AnswerCount'])
+    print('---------------------------------------------')
 
 def searchPosts(db, user):
 
@@ -18,19 +28,23 @@ def searchPosts(db, user):
     keywords = keyword_choice.split(" ")
 
 
+
     for word in keywords:
         for post in questionPosts:
             title = post['Title']
             body = post['Body']
-            tags = post['Tags']
-            if (word in title or word in body or word in tags):
-                found.append(post['Id'])
-                print("ID: ", post['Id'])
-                print("Title: ", post['Title'])
-                print("Creation Date: ", post['CreationDate'])
-                print("Score: ", post['Score'])
-                print("Answer Count: ", post['AnswerCount'])
-                print('---------------------------------------------')
+            if 'Tags' in post:
+                tags = post['Tags']
+                if (word in title or word in body or word in tags):
+                    found.append(post['Id'])
+                    display_post(post)
+            else: 
+                if (word in title or word in body):
+                    found.append(post['Id'])
+                    display_post(post)
+    if found == []:
+        print("No results found")
+        return
 
     id_choice = input("Select a post by ID: ")
 
@@ -61,11 +75,14 @@ def searchPosts(db, user):
 
     #Put part 3,4,5 here
     if action_input == '1':
-        pass
+        action_answerQuestion.answer_question(db,user,id_choice)
     elif action_input == '2':
-        pass
+        action_listAnswers.list_answers(db,user,id_choice)
     elif action_input == '3':
-        pass
+        action_vote.action_vote(db,user,id_choice)
+    else:
+        print("Invalid enrtry")
+        return
 
 
 
