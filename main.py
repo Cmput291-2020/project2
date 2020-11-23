@@ -1,8 +1,9 @@
 # main file that runs both phase1 and phase2
 import sys
-import phase1 as p1
+#import phase1 as p1
 import enterProgram
 import action_postQuestion
+import searchPosts
 from pymongo import MongoClient
 
 def main():
@@ -21,12 +22,16 @@ def main():
         display_page = '''
         ---------Exit-------------------Press 0---------
         ---------Post Question----------Press 1---------
+        ---------Search Question--------Press 2---------
         '''
 
         user_choice = input(display_page)
         if user_choice == '1':
             #user can post question
             action_postQuestion.post_question(db,current_user)
+
+        elif user_choice == '2':
+            searchPosts.searchPosts(db, current_user)
 
         elif user_choice =="0":
             print('Goodbye')
