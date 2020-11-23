@@ -12,11 +12,13 @@ def main():
     client = MongoClient("mongodb://localhost:"+ userinput +"/")
 
     # database
-    db = client["PROJECT2"]
+    db = client["291db"]
 
     #p1.phase_one(userinput) #phase 1 reads the json files
 
     current_user = enterProgram.init_function(db) #init_fun create and return user
+    while current_user == False:
+        current_user = enterProgram.init_function(db)
 
     while True:
         display_page = '''
