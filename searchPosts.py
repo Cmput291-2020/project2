@@ -30,7 +30,6 @@ def searchPosts(db, user):
                 print("Creation Date: ", post['CreationDate'])
                 print("Score: ", post['Score'])
                 print("Answer Count: ", post['AnswerCount'])
-                print("Answer Count: ", post['ViewCount'])
                 print('---------------------------------------------')
 
     id_choice = input("Select a post by ID: ")
