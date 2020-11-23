@@ -7,39 +7,59 @@
 # (3) the number of votes registered for the user.
 import random
 
+def average(total,results):
+    if len(results) == 0:
+        return 0
+    else:
+        return round(total//len(results),2)
+
+def handle_input():
+    running = True
+    user_id = input("please enter number: ")
+    while running:
+        if not user_id.isdigit():
+            print("please enter number: ")
+        else: running = False
+    return user_id
+    
 def init_function(db):
-    user_collection = db["users"]
     postCollection = db["Posts"]
 
     user_id_choice = input("Would you like to select an ID?(y/n): ")
+    
     if(user_id_choice == "y" or user_id_choice=="Y"):
-        user_id = input("Please enter your ID number: ")
-        results = list(postCollection.find({"OwnerUserId":user_id},{"Title":1,
-        "Score":1}))
+        user_id = handle_input()
+        results = list(postCollection.find({"OwnerUserId":user_id}))
+        if (len(results)==0):
+            print("rejected")
+            return False
 
-        total_score = 0
-        for i in range(len(results)):
-            total_score += results[i]["Score"]
-        avg_score = round(total_score//len(results),2)
-            
-        if (not results):
-            user = {"_id":user_id}
-            user_collection.insert_one(user)
         else:
-            print("Questions:\n")
+            results = list(postCollection.find({"OwnerUserId":user_id,"PostTypeId":"1"},{"Id":1,"Title":1,
+            "Score":1}))
+
+            total_score = 0
+            for i in range(len(results)):
+                total_score += results[i]["Score"]
+        
+            avg_score = average(total_score,results)
+
+
+            print("\nQuestions:")
             for result in results:
-                print(result["Title"])
+                print("Post Id: " + str(result["Id"]))
+                print("Post Title: " + result["Title"]+"\n")
             print("Average score of your question posts are: " + str(avg_score))
+
+        return user_id
                 
         
         
     elif(user_id_choice == "n" or user_id_choice=="N"):
-        user_id = random.randint(1,9999)
-        user = {"_id":user_id}
-        user_collection.insert_one(user)    
+        return None
         
 
     else:
         print("Invalid input, please try again: ")
-    return user_id
+
         
