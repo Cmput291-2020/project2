@@ -2,21 +2,44 @@
 
 import datetime
 import random
+import pymongo
 
 def post_question(db,current_user):
-    user_collection = db["users"]
+
     postCollection = db['Posts']
+    tagCollection = db['Tags']
 
     title = input('Please enter a title of your question: \n')
+    tags = input("Please enter some tags for your post(seprate by space):\n")
+    tags_list = tags.split()
     body = input('Please enter your question: \n')
+
+
     post_id = random.randint(400728,999999)
-    if postCollection.find({"Id":post_id}):
+    while postCollection.find({"Id":post_id}) == True:
         post_id = random.randint(400728,999999)
-    
 
-    print("inserting")
+    #for tag in tags:
+    #    if tagCollection.find({"TagName":tag}):
+    #        print(type(tagCollection.update({"Count":tag})))
 
-    question ={
+    print("Posting...")
+    if current_user == None:
+        question ={
+            "Id": post_id,
+            "Title":title,
+            "Body":body,
+            #"OwnerUserId":current_user,
+            "CreationDate": datetime.datetime.utcnow(),
+            "PostTypeId": "1",
+            "Score": 0,
+            "ViewCount": 0,
+            "AnswerCount": 0,
+            "CommentCount": 0,
+            "FavoriteCount": 0,
+            "ContentLicense": "CC BY-SA 2.5"}
+    else:
+        question ={
             "Id": post_id,
             "Title":title,
             "Body":body,
@@ -32,7 +55,7 @@ def post_question(db,current_user):
 
     
     postCollection.insert_one(question)
-    print("successful")
+    print("Success!")
 
 
 
