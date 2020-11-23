@@ -11,55 +11,75 @@ def average(total,results):
     if len(results) == 0:
         return 0
     else:
-        return round(total//len(results),2)
+        return round(total/len(results),2)
+
 
 def handle_input():
-    running = True
+
     user_id = input("please enter number: ")
-    while running:
-        if not user_id.isdigit():
-            print("please enter number: ")
-        else: running = False
+    while not user_id.isdigit():
+        user_id = input("invalid input, please enter number: ")
     return user_id
-    
+
+
+def display_answer(postCollection,user_id):
+    answer_results = list(postCollection.find({"OwnerUserId":user_id,"PostTypeId":"2"}))
+    answer_num = len(answer_results)
+    print("\nNumber of answers: "+str(answer_num))
+    total_score = 0
+    for i in range(len(answer_results)):
+        total_score += answer_results[i]["Score"]
+        
+    avg_score = average(total_score,answer_results)
+
+    print("Average score of answers: " + str(avg_score))
+
+
+def display_question(postCollection,user_id):
+    question_results = list(postCollection.find({"OwnerUserId":user_id,"PostTypeId":"1"}))
+    question_num = len(question_results)
+    print("\nNumber of questions: "+str(question_num))
+    total_score = 0
+    for i in range(len(question_results)):
+        total_score += question_results[i]["Score"]
+        
+    avg_score = average(total_score,question_results)
+
+    print("Average score of questions: " + str(avg_score))
+
+
+def display_votes(voteCollection,user_id):
+    votes = voteCollection.count_documents({"UserId":user_id})
+
+    print("\nVotes registered: " + str(votes))
+
+
+
 def init_function(db):
     postCollection = db["Posts"]
+    voteCollection = db['Votes']
 
     user_id_choice = input("Would you like to select an ID?(y/n): ")
+    while user_id_choice not in "yYnN":
+        user_id_choice = input("Invalid input, please try again: ")
     
     if(user_id_choice == "y" or user_id_choice=="Y"):
         user_id = handle_input()
-        results = list(postCollection.find({"OwnerUserId":user_id}))
-        if (len(results)==0):
+        result = list(postCollection.find({"OwnerUserId":user_id}))
+        if (len(result)==0):
             print("rejected")
             return False
 
         else:
-            results = list(postCollection.find({"OwnerUserId":user_id,"PostTypeId":"1"},{"Id":1,"Title":1,
-            "Score":1}))
-
-            total_score = 0
-            for i in range(len(results)):
-                total_score += results[i]["Score"]
-        
-            avg_score = average(total_score,results)
-
-
-            print("\nQuestions:")
-            for result in results:
-                print("Post Id: " + str(result["Id"]))
-                print("Post Title: " + result["Title"]+"\n")
-            print("Average score of your question posts are: " + str(avg_score))
-
+            display_question(postCollection,user_id)
+            display_answer(postCollection,user_id)
+            display_votes(voteCollection,user_id)
         return user_id
                 
         
         
-    elif(user_id_choice == "n" or user_id_choice=="N"):
-        return None
-        
-
     else:
-        print("Invalid input, please try again: ")
+        return None
+
 
         

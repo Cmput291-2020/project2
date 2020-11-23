@@ -18,10 +18,28 @@ def post_question(db,current_user):
     post_id = random.randint(400728,999999)
     while postCollection.find({"Id":post_id}) == True:
         post_id = random.randint(400728,999999)
+    
+    for tag in tags_list:
+        if len(list(tagCollection.find({"TagName":tag}))) != 0:
+            tag_result = list(tagCollection.find({"TagName":tag}))[0]
+            tag_count = tag_result['Count']
+            
+            tag_count += 1
+            tagCollection.update_one({"TagName":tag},{ "$set": { "Count": tag_count } } )
 
-    #for tag in tags:
-    #    if tagCollection.find({"TagName":tag}):
-    #        print(type(tagCollection.update({"Count":tag})))
+
+        else:
+            tag_id = random.randint(5063,9999)
+            while tagCollection.find({"Id":tag_id}) == True:
+                tag_id = random.randint(5063,9999)
+
+            tagCollection.insert_one(
+                {
+                "Id": tag_id,
+                "TagName": tag,
+                "Count": 1})
+
+
 
     print("Posting...")
     if current_user == None:
