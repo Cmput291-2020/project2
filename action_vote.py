@@ -9,7 +9,7 @@ def action_vote(db, current_user, pid):
     for i in votes_collect:
         votes.append(i)
 
-    if len(votes) > 0:
+    if len(votes) > 0 and current_user != None:
         print("You have already voted...")
         return
 
