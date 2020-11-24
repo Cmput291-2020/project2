@@ -9,6 +9,16 @@ def id_match(id, listofIDs):
             return True
     return False
 
+def display_detail(post):
+    print("ID: ", post['Id'])
+    print("Title: ", post['Title'])
+    print("Score: ", post['Score'])
+    print("ViewCount: ", post['ViewCount'])
+    print("Body: ", post['Body'])
+    print("Creation Date: ", post['CreationDate'])
+    print("Answer Count: ", post['AnswerCount'])
+    print('---------------------------------------------')
+
 def display_post(post):
     print("ID: ", post['Id'])
     print("Title: ", post['Title'])
@@ -55,16 +65,16 @@ def searchPosts(db, user):
         return
 
     #adding one to the view count
-    temp = postCollection.find_one({'Id': id_choice})
-    viewCount = int(temp['ViewCount'])
+    temp = list(postCollection.find({'Id': id_choice}))
+    viewCount = int(temp[0]['ViewCount'])
     viewCount += 1
-    viewCount = str(viewCount)
-    postCollection.update({'Id':id_choice}, {'$set': {'ViewCount':viewCount}})
+    #viewCount = str(viewCount)
+    postCollection.update_one({'Id':id_choice}, {'$set': {'ViewCount':viewCount}})
 
     #printing all fields
     print("-------------------------------------------------")
     print("You selected ID: ", id_choice)
-    pprint(temp)
+    display_detail(temp[0])
     print("-------------------------------------------------")
 
     # action options
@@ -72,9 +82,13 @@ def searchPosts(db, user):
     print("(2) List Answers")
     print("(3) Vote")
     action_input = input("Please select a choice: ")
-
+    while action_input not in "123":
+        action_input = input("Invalid, please try again: ")
     #Put part 3,4,5 here
     if action_input == '1':
+        answerCount = int(temp[0]['AnswerCount'])
+        answerCount += 1
+        postCollection.update_one({'Id':id_choice}, {'$set': {'AnswerCount':answerCount}})
         action_answerQuestion.answer_question(db,user,id_choice)
     elif action_input == '2':
         action_listAnswers.list_answers(db,user,id_choice)
