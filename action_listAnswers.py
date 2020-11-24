@@ -1,5 +1,9 @@
 import action_vote
 import pprint
+def display_post(post):
+    print("Score: ", post['Score'])
+    print("Body: ", post['Body'])
+    print("CreationDate: ", post['CreationDate'])
 
 def list_answers(db,current_user,searched_pid):
 
@@ -7,7 +11,7 @@ def list_answers(db,current_user,searched_pid):
 
     answers = []
     thereisaccept = False
-    question = postCollection.find_one({"Id": searched_pid})
+    question = list(postCollection.find({"Id": searched_pid}))[0]
     accepted_id = ""
     if "AcceptedAnswerId" in question  :
         accepted_id = str(question["AcceptedAnswerId"])
@@ -51,14 +55,17 @@ def list_answers(db,current_user,searched_pid):
         -------- BACK TO MAIN --------- Press 0 ---------------------------------
         --- SELECT AN ANSWER YOU WOULD LIKE TO SEE THE FIELDS (BETWEEN 1 - '''+str(i+1)+''') ---
         '''))
+    
+    while a not in range(len(answers)+1):
+        a = int(input("Please try again: "))
 
-    post = answers[i-1]
+    post = answers[a-1]
 
     if a == 0:
         return
     else:
         print("-----------")
-        pprint.pprint(post)
+        display_post(post)
         print("-----------")
     
     vote = input("Would you like to vote on this answer?(y/n): ")
