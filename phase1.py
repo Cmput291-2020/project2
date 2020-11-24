@@ -20,6 +20,7 @@ import ijson
 from pymongo import MongoClient
 import pymongo
 import os.path
+import time,sys
 
 
 def strListMaker(str, currList):
@@ -85,3 +86,22 @@ def phase_one(db,port):
     tagCollection.insert_many(cols)
 
 
+def main():
+    userinput = sys.argv[1]
+    # make connection
+    client = MongoClient("mongodb://localhost:"+ userinput +"/")
+    # database
+    db = client["291db"]
+
+    phase_one(db,userinput)
+
+
+    
+
+
+
+
+if __name__ == '__main__':
+    start_time = time.time()
+    main()
+    print("--- %s seconds ---" % (time.time() - start_time))
