@@ -9,13 +9,13 @@ def action_vote(db, current_user, pid):
     for i in votes_collect:
         votes.append(i)
 
-    if len(votes) > 0 and current_user != None:
+    if len(votes) > 0:
         print("You have already voted...")
         return
 
-    vote_id = str(random.randint(1328496,9999999))
+    vote_id = str(random.randint(100000000,99999999999))
     while votesCollection.find({"Id":vote_id}) == True:
-        vote_id = str(random.randint(1328496,9999999))
+        vote_id = str(random.randint(100000000,99999999999))
 
 
     current_time = datetime.datetime.utcnow()
