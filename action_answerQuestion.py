@@ -7,9 +7,9 @@ def answer_question(db,current_user,searched_pid):
 
     body = input('Please enter your answer: \n')
 
-    post_id = str(random.randint(400728,999999))
+    post_id = str(random.randint(100000000,99999999999))
     while postCollection.find({"Id":post_id}) == True:
-        post_id = str(random.randint(400728,999999))
+        post_id = str(random.randint(100000000,99999999999))
 
 
     current_time = datetime.datetime.utcnow()

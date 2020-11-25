@@ -1,6 +1,6 @@
-# main file that runs phase2
+# main file that runs both phase1 and phase2
 import sys
-#import phase1 as p1
+import phase1 as p1
 import enterProgram
 import action_postQuestion
 import searchPosts
