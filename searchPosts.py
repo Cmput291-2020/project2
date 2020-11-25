@@ -10,14 +10,9 @@ def id_match(id, listofIDs):
     return False
 
 def display_detail(post):
-    print("ID: ", post['Id'])
-    print("Title: ", post['Title'])
-    print("Score: ", post['Score'])
-    print("ViewCount: ", post['ViewCount'])
-    print("Body: ", post['Body'])
-    print("Creation Date: ", post['CreationDate'])
-    print("Answer Count: ", post['AnswerCount'])
-    print('---------------------------------------------')
+    for key in post.keys():
+        print(key,": ",post[key])
+
 
 def display_post(post):
     print("ID: ", post['Id'])
