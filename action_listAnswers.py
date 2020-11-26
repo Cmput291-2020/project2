@@ -1,10 +1,10 @@
 import action_vote
 import pprint
-def display_post(post):
-    print("Score: ", post['Score'])
-    print("Body: ", post['Body'])
-    print("CreationDate: ", post['CreationDate'])
 
+def display_detail(post):
+    for key in post.keys():
+        print(key,": ",post[key])
+        
 def list_answers(db,current_user,searched_pid):
 
     postCollection = db['Posts']
@@ -65,7 +65,7 @@ def list_answers(db,current_user,searched_pid):
         return
     else:
         print("-----------")
-        display_post(post)
+        display_detail(post)
         print("-----------")
     
     vote = input("Would you like to vote on this answer?(y/n): ")
